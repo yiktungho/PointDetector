@@ -21,9 +21,9 @@ class NeuronNet: public NeuralProcessor { //A neuron net made by connecting 3 ne
     
 public:
     NeuronNet() {
-        Neuron layer1a (0,0,0);
-        Neuron layer1b (0,0,0);
-        Neuron layer2 (0,0,0);
+        Neuron layer1a;
+        Neuron layer1b;
+        Neuron layer2;
     }
 	NeuronNet(Neuron n1, Neuron n2, Neuron n3) { //Constructor setting neurons of neuron net
 		layer1a = n1;
@@ -33,9 +33,12 @@ public:
     
     NeuronNet(double aw0, double aw1, double aw2, double bw0, double bw1, double bw2,
               double cw0, double cw1, double cw2) { //Constructor setting weights of all Neurons
-		layer1a.update(aw0, aw1, aw2);
-		layer1b.update(bw0, bw1, bw2);
-		layer2.update(cw0,  cw1, cw2);
+        double updated_weights_a[3] = {aw0, aw1, aw2};
+        double updated_weights_b[3] = {bw0, bw1, bw2};
+        double updated_weights_c[3] = {cw0, cw1, cw2};
+        layer1a.update(updated_weights_a);
+		layer1b.update(updated_weights_b);
+		layer2.update(updated_weights_c);
 	}
 	
 	void initialise() { //Initialises all neurons in net
@@ -68,9 +71,12 @@ public:
     
     void update(double aw0, double aw1, double aw2, double bw0, double bw1, double bw2,
                 double cw0, double cw1, double cw2) { //update weights of Neurons in net
-		layer1a.update(aw0, aw1, aw2);
-		layer1b.update(bw0, bw1, bw2);
-		layer2.update(cw0,  cw1, cw2);
+        double updated_weights_a[3] = {aw0, aw1, aw2};
+        double updated_weights_b[3] = {bw0, bw1, bw2};
+        double updated_weights_c[3] = {cw0, cw1, cw2};
+        layer1a.update(updated_weights_a);
+		layer1b.update(updated_weights_b);
+		layer2.update(updated_weights_c);
 	}
     
     void learn(std::vector<Input> Inputmap, std::vector<double> targetmap, double learnrate) {
@@ -114,9 +120,12 @@ public:
                     db = learnrate*(H*layer2.w[2])*deri1b + m*db;
                     
                     //Updating Neuron Weights
-                    layer2.update(layer2.w[0]+d, layer2.w[1]+layer1a.compute(a)*d, layer2.w[2]+layer1b.compute(a)*d);
-                    layer1a.update(layer1a.w[0]+da, layer1a.w[1]+a[0]*da, layer1a.w[2]+a[1]*da);
-                    layer1b.update(layer1b.w[0]+db, layer1b.w[1]+a[0]*db, layer1b.w[2]+a[1]*db);
+                    double updated_weights_a[3] = {layer2.w[0]+d, layer2.w[1]+layer1a.compute(a)*d, layer2.w[2]+layer1b.compute(a)*d};
+                    double updated_weights_b[3] = {layer1a.w[0]+da, layer1a.w[1]+a[0]*da, layer1a.w[2]+a[1]*da};
+                    double updated_weights_c[3] = {layer1b.w[0]+db, layer1b.w[1]+a[0]*db, layer1b.w[2]+a[1]*db};
+                    layer2.update(updated_weights_a);
+                    layer1a.update(updated_weights_b);
+                    layer1b.update(updated_weights_c);
                     
                 }
                 counter++;
@@ -175,21 +184,21 @@ class NeuralDetector: public NeuralProcessor { //A neuron net made by connecting
 public:
 	NeuralDetector() {
         //First hidden layer
-        Neuron layer1a (0,0,0);
-        Neuron layer1b (0,0,0);
-        Neuron layer1c (0,0,0);
-        Neuron layer1d (0,0,0);
-        Neuron layer1e (0,0,0);
-        Neuron layer1f (0,0,0);
+        Neuron layer1a;
+        Neuron layer1b;
+        Neuron layer1c;
+        Neuron layer1d;
+        Neuron layer1e;
+        Neuron layer1f;
         
         //Second hidden layer
-        Neuron6 layer2a (0,0,0,0,0,0,0);
-        Neuron6 layer2b (0,0,0,0,0,0,0);
-        Neuron6 layer2c (0,0,0,0,0,0,0);
-        Neuron6 layer2d (0,0,0,0,0,0,0);
+        Neuron6 layer2a;
+        Neuron6 layer2b;
+        Neuron6 layer2c;
+        Neuron6 layer2d;
         
         //Output layer
-        Neuron4 layer3 (0,0,0,0,0);
+        Neuron4 layer3;
     }
 	NeuralDetector(Neuron n1, Neuron n2, Neuron n3, Neuron n4, Neuron n5, Neuron n6, Neuron6 n21,
                    Neuron6 n22, Neuron6 n23, Neuron6 n24, Neuron4 n31 ) {
@@ -408,28 +417,39 @@ public:
                     df1 = learnrate*(H*(layer2a.w[6]+layer2b.w[6]+layer2c.w[6]+layer2d.w[6]))*deri1f + m*df1;
                     
                     //Updating Neuron Weights
-                    layer3.update(layer3.w[0]+d, layer3.w[1]+compute2(a,"a")*d, layer3.w[2]+compute2(a,"b")*d
-                                  , layer3.w[3]+compute2(a,"c")*d, layer3.w[4]+compute2(a,"d")*d);
+                    double updated_weights_3[5] = {layer3.w[0]+d, layer3.w[1]+compute2(a,"a")*d, layer3.w[2]+compute2(a,"b")*d
+                        , layer3.w[3]+compute2(a,"c")*d, layer3.w[4]+compute2(a,"d")*d};
+                    layer3.update(updated_weights_3);
                     
-                    layer2a.update(layer2a.w[0]+da, layer2a.w[1]+layer1a.compute(a)*da, layer2a.w[2]+layer1b.compute(a)*da
-                                   , layer2a.w[3]+layer1c.compute(a)*da, layer2a.w[4]+layer1d.compute(a)*da
-                                   , layer2a.w[5]+layer1e.compute(a)*da, layer2a.w[6]+layer1f.compute(a)*da);
-                    layer2b.update(layer2b.w[0]+db, layer2b.w[1]+layer1a.compute(a)*db, layer2b.w[2]+layer1b.compute(a)*db
-                                   , layer2b.w[3]+layer1c.compute(a)*db, layer2b.w[4]+layer1d.compute(a)*db
-                                   , layer2b.w[5]+layer1e.compute(a)*db, layer2b.w[6]+layer1f.compute(a)*db);
-                    layer2c.update(layer2a.w[0]+da, layer2a.w[1]+layer1a.compute(a)*da, layer2a.w[2]+layer1b.compute(a)*dc
-                                   , layer2c.w[3]+layer1c.compute(a)*dc, layer2c.w[4]+layer1d.compute(a)*dc
-                                   , layer2c.w[5]+layer1e.compute(a)*dc, layer2c.w[6]+layer1f.compute(a)*dc);
-                    layer2d.update(layer2a.w[0]+da, layer2a.w[1]+layer1a.compute(a)*da, layer2a.w[2]+layer1b.compute(a)*dd
-                                   , layer2d.w[3]+layer1c.compute(a)*dd, layer2d.w[4]+layer1d.compute(a)*dd
-                                   , layer2d.w[5]+layer1e.compute(a)*dd, layer2d.w[6]+layer1f.compute(a)*dd);
+                    double updated_weights_2a[7] = {layer2a.w[0]+da, layer2a.w[1]+layer1a.compute(a)*da, layer2a.w[2]+layer1b.compute(a)*da
+                        , layer2a.w[3]+layer1c.compute(a)*da, layer2a.w[4]+layer1d.compute(a)*da
+                        , layer2a.w[5]+layer1e.compute(a)*da, layer2a.w[6]+layer1f.compute(a)*da};
+                    layer2a.update(updated_weights_2a);
+                    double updated_weights_2b[7] = {layer2b.w[0]+db, layer2b.w[1]+layer1a.compute(a)*db, layer2b.w[2]+layer1b.compute(a)*db
+                        , layer2b.w[3]+layer1c.compute(a)*db, layer2b.w[4]+layer1d.compute(a)*db
+                        , layer2b.w[5]+layer1e.compute(a)*db, layer2b.w[6]+layer1f.compute(a)*db};
+                    layer2b.update(updated_weights_2b);
+                    double updated_weights_2c[7] = {layer2a.w[0]+da, layer2a.w[1]+layer1a.compute(a)*da, layer2a.w[2]+layer1b.compute(a)*dc
+                        , layer2c.w[3]+layer1c.compute(a)*dc, layer2c.w[4]+layer1d.compute(a)*dc
+                        , layer2c.w[5]+layer1e.compute(a)*dc, layer2c.w[6]+layer1f.compute(a)*dc};
+                    layer2c.update(updated_weights_2c);
+                    double updated_weights_2d[7] = {layer2a.w[0]+da, layer2a.w[1]+layer1a.compute(a)*da, layer2a.w[2]+layer1b.compute(a)*dd
+                        , layer2d.w[3]+layer1c.compute(a)*dd, layer2d.w[4]+layer1d.compute(a)*dd
+                        , layer2d.w[5]+layer1e.compute(a)*dd, layer2d.w[6]+layer1f.compute(a)*dd};
+                    layer2d.update(updated_weights_2d);
                     
-                    layer1a.update(layer1a.w[0]+da1, layer1a.w[1]+a[0]*da1, layer1a.w[2]+a[1]*da1);
-                    layer1b.update(layer1b.w[0]+db1, layer1b.w[1]+a[0]*db1, layer1b.w[2]+a[1]*db1);
-                    layer1c.update(layer1c.w[0]+dc1, layer1c.w[1]+a[0]*dc1, layer1c.w[2]+a[1]*dc1);
-                    layer1d.update(layer1d.w[0]+dd1, layer1d.w[1]+a[0]*dd1, layer1d.w[2]+a[1]*dd1);
-                    layer1e.update(layer1e.w[0]+de1, layer1e.w[1]+a[0]*de1, layer1e.w[2]+a[1]*de1);
-                    layer1f.update(layer1f.w[0]+df1, layer1f.w[1]+a[0]*df1, layer1f.w[2]+a[1]*df1);
+                    double updated_weights_1a[3] = {layer1a.w[0]+da1, layer1a.w[1]+a[0]*da1, layer1a.w[2]+a[1]*da1};
+                    double updated_weights_1b[3] = {layer1b.w[0]+db1, layer1b.w[1]+a[0]*db1, layer1b.w[2]+a[1]*db1};
+                    double updated_weights_1c[3] = {layer1c.w[0]+dc1, layer1c.w[1]+a[0]*dc1, layer1c.w[2]+a[1]*dc1};
+                    double updated_weights_1d[3] = {layer1d.w[0]+dd1, layer1d.w[1]+a[0]*dd1, layer1d.w[2]+a[1]*dd1};
+                    double updated_weights_1e[3] = {layer1e.w[0]+de1, layer1e.w[1]+a[0]*de1, layer1e.w[2]+a[1]*de1};
+                    double updated_weights_1f[3] = {layer1f.w[0]+df1, layer1f.w[1]+a[0]*df1, layer1f.w[2]+a[1]*df1};
+                    layer1a.update(updated_weights_1a);
+                    layer1b.update(updated_weights_1b);
+                    layer1c.update(updated_weights_1c);
+                    layer1d.update(updated_weights_1d);
+                    layer1e.update(updated_weights_1e);
+                    layer1f.update(updated_weights_1f);
                     
                 }
                 

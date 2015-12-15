@@ -45,10 +45,10 @@ public:
             w[i] = 0;
         }
     }
-    Neuron(double weight0, double weight1, double weight2) { //Constructor setting weights of Neuron
-		w[0] = weight0;
-		w[1] = weight1;
-		w[2] = weight2;
+    Neuron(double weight[NUMBER_OF_WEIGHTS]) { //Constructor setting weights of Neuron
+        for(int i = 0; i < NUMBER_OF_WEIGHTS; i++) {
+            w[i] = weight[i];
+        }
 	}
     
     void initialise(){ //initialises Neuron weights
@@ -76,10 +76,10 @@ public:
 		return a;
 	}
     
-    void update(double weight0, double weight1, double weight2) { //updating weights of Neuron
-		w[0] = weight0;
-		w[1] = weight1;
-		w[2] = weight2;
+    void update(double weight[NUMBER_OF_WEIGHTS]) { //updating weights of Neuron
+        for(int i = 0; i < NUMBER_OF_WEIGHTS; i++) {
+            w[i] = weight[i];
+        }
 	}
     
     void learn(std::vector<Input> Inputmap, std::vector<double> targetmap, double learnrate) {
@@ -102,7 +102,8 @@ public:
                     errorsum = std::abs(error) + errorsum;
                     double deri = (0.5)*pow(cosh(computeX(a)/T),-2)/((double) T);
                     d = learnrate*error*deri + m*d;
-                    update(w[0]+d, w[1]+a[0]*d, w[2]+a[1]*d);
+                    double updated_weights[NUMBER_OF_WEIGHTS] = {w[0]+d, w[1]+a[0]*d, w[2]+a[1]*d};
+                    update(updated_weights);
                 }
                 counter++;
                 
@@ -147,12 +148,10 @@ public:
             w[i] = ((double) rand() / RAND_MAX);
         }
     }
-	Neuron4(double weight0, double weight1, double weight2, double weight3, double weight4) { //Constructor setting weights of Neuron
-		w[0] = weight0;
-		w[1] = weight1;
-		w[2] = weight2;
-		w[3] = weight3;
-		w[4] = weight4;
+	Neuron4(double weight[NUMBER_OF_WEIGHTS]) { //Constructor setting weights of Neuron
+        for(int i = 0; i < NUMBER_OF_WEIGHTS; i++) {
+            w[i] = weight[i];
+        }
 	}
 	
     void initialise(){ //initialises Neuron weights
@@ -185,12 +184,10 @@ public:
 		return a;
 	}
 	
-	void update(double weight0, double weight1, double weight2, double weight3, double weight4) { //updating weights of Neuron
-		w[0] = weight0;
-		w[1] = weight1;
-		w[2] = weight2;
-		w[3] = weight3;
-		w[4] = weight4;
+	void update(double weight[NUMBER_OF_WEIGHTS]) { //updating weights of Neuron
+        for(int i = 0; i < NUMBER_OF_WEIGHTS; i++) {
+            w[i] = weight[i];
+        }
 	}
     
 };
@@ -218,15 +215,11 @@ public:
             w[i] = ((double) rand() / RAND_MAX);
         }
     }
-	Neuron6(double weight0, double weight1, double weight2, double weight3, double weight4, double weight5, double weight6) {
+	Neuron6(double weight[NUMBER_OF_WEIGHTS]) {
 		//Constructor setting weights of Neuron
-		w[0] = weight0;
-		w[1] = weight1;
-		w[2] = weight2;
-		w[3] = weight3;
-		w[4] = weight4;
-		w[5] = weight5;
-		w[6] = weight6;
+        for(int i = 0; i < NUMBER_OF_WEIGHTS; i++) {
+            w[i] = weight[i];
+        }
 	}
 	
 	void initialise(){ //initialises Neuron weights
@@ -260,15 +253,11 @@ public:
 		return a;
 	}
 	
-	void update(double weight0, double weight1, double weight2, double weight3, double weight4, double weight5, double weight6) {
+	void update(double weight[NUMBER_OF_WEIGHTS]) {
 		//updating weights of Neuron
-		w[0] = weight0;
-		w[1] = weight1;
-		w[2] = weight2;
-		w[3] = weight3;
-		w[4] = weight4;
-		w[5] = weight5;
-		w[6] = weight6;
+        for(int i = 0; i < NUMBER_OF_WEIGHTS; i++) {
+            w[i] = weight[i];
+        }
 	}
 
 };

@@ -201,7 +201,7 @@ int main () {
     testing(XORtester, Inputmap);
     
     cout << "---End Neuron Network Demo---" << endl;
-        
+    
     cout << ("---Begin Detector Demo---") << endl;
     cout << ("---Training 2 Hidden Layer Neural Net to identify {0.7,0.3}---") << endl;
     
