@@ -15,8 +15,8 @@ class NeuronNet: public NeuralProcessor { //A neuron net made by connecting 3 ne
     
     friend std::ostream& operator<<(std::ostream&, const NeuronNet&);
     
-	Neuron layer1a;
-	Neuron layer1b;
+    static const int NUM_NEURONS_LAYER_1 = 2;
+	Neuron layer1[NUM_NEURONS_LAYER_1];
 	Neuron layer2;
     
 public:
@@ -26,57 +26,48 @@ public:
         Neuron layer2;
     }
 	NeuronNet(Neuron n1, Neuron n2, Neuron n3) { //Constructor setting neurons of neuron net
-		layer1a = n1;
-		layer1b = n2;
+		layer1[0] = n1;
+		layer1[1] = n2;
 		layer2 = n3;
 	}
     
-    NeuronNet(double aw0, double aw1, double aw2, double bw0, double bw1, double bw2,
-              double cw0, double cw1, double cw2) { //Constructor setting weights of all Neurons
-        double updated_weights_a[3] = {aw0, aw1, aw2};
-        double updated_weights_b[3] = {bw0, bw1, bw2};
-        double updated_weights_c[3] = {cw0, cw1, cw2};
-        layer1a.update(updated_weights_a);
-		layer1b.update(updated_weights_b);
-		layer2.update(updated_weights_c);
+    NeuronNet(double weights_a[3], double weights_b[3], double weights_c[3]) { //Constructor setting weights of all Neurons
+        layer1[0].update(weights_a);
+		layer1[1].update(weights_b);
+		layer2.update(weights_c);
 	}
 	
 	void initialise() { //Initialises all neurons in net
-		layer1a.initialise();
-		layer1b.initialise();
+        for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+            layer1[i].initialise();
+        }
 		layer2.initialise();
 	}
     
     double compute(Input q){ //computing output from inputs using transfer function
-		double Input1 = 0;
-		double Input2 = 0;
 		double output = 0;
-		Input1 = layer1a.compute(q);
-		Input2 = layer1b.compute(q);
-		Input q2 = Input {Input1,Input2};
+        Input q2;
+        for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+            q2[i] = layer1[i].compute(q);
+        }
 		output = layer2.compute(q2);
 		return output;
 	}
     
     double computeX(Input q){ //middle step in compute, used to simplify learning algorithm
-		double Input1 = 0;
-		double Input2 = 0;
 		double output = 0;
-		Input1 = layer1a.compute(q);
-		Input2 = layer1b.compute(q);
-		Input q2 = Input {Input1,Input2};
+        Input q2;
+        for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+            q2[i] = layer1[i].compute(q);
+        }
 		output = layer2.computeX(q2);
 		return output;
 	}
     
-    void update(double aw0, double aw1, double aw2, double bw0, double bw1, double bw2,
-                double cw0, double cw1, double cw2) { //update weights of Neurons in net
-        double updated_weights_a[3] = {aw0, aw1, aw2};
-        double updated_weights_b[3] = {bw0, bw1, bw2};
-        double updated_weights_c[3] = {cw0, cw1, cw2};
-        layer1a.update(updated_weights_a);
-		layer1b.update(updated_weights_b);
-		layer2.update(updated_weights_c);
+    void update(double weights_a[3], double weights_b[3], double weights_c[3]) { //update weights of Neurons in net
+        layer1[0].update(weights_a);
+		layer1[1].update(weights_b);
+		layer2.update(weights_c);
 	}
     
     void learn(std::vector<Input> Inputmap, std::vector<double> targetmap, double learnrate) {
@@ -85,13 +76,14 @@ public:
 		//initialising variables
         
 		//Update variables to be stored for momentum
-		double d = 0;
-		double da = 0;
-		double db = 0;
+		double d_layer_2 = 0;
+        double d_layer_1[NUM_NEURONS_LAYER_1] = {0,0};
 		
 		double errorsum = 1;
 		double counter = 0;
 		double initcounter = 0;
+        
+        double updated_weights_layer_1[2][3];
         
 		double m = 0.5; //momentum term
 		
@@ -106,26 +98,31 @@ public:
                     errorsum = std::abs(error) + errorsum;
                     
                     //Calculating Update Terms
+                    // Layer 2 Calculations
                     double deri2 = (0.5)*pow(cosh(computeX(a)/T),-2)/((double) T);
                     
-                    d = learnrate*error*deri2 + m*d;
-                    
-                    double deri1a = (0.5)*pow(cosh(layer1a.computeX(a)/T),-2)/((double) T);
-                    
-                    double deri1b = (0.5)*pow(cosh(layer1b.computeX(a)/T),-2)/((double) T);
+                    d_layer_2 = learnrate*error*deri2 + m*d_layer_2;
                     
                     double H = error*deri2;
+                    double updated_weights_a[3] = {layer2.w[0]+d_layer_2, layer2.w[1]+layer1[0].compute(a)*d_layer_2, layer2.w[2]+layer1[1].compute(a)*d_layer_2};
                     
-                    da = learnrate*(H*layer2.w[1])*deri1a + m*da;
-                    db = learnrate*(H*layer2.w[2])*deri1b + m*db;
+                    // Layer 1 Calculations
+                    double deri1[NUM_NEURONS_LAYER_1] = {0,0};
                     
+                    for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+                        deri1[i] = (0.5)*pow(cosh(layer1[i].computeX(a)/T),-2)/((double) T);
+                        d_layer_1[i] = learnrate*(H*layer2.w[i+1])*deri1[i] + m*d_layer_1[i];
+                    }
+
+                    for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+                        updated_weights_layer_1[i][0] = layer1[i].w[0]+d_layer_1[i];
+                        updated_weights_layer_1[i][1] = layer1[i].w[1]+a[0]*d_layer_1[i];
+                        updated_weights_layer_1[i][2] = layer1[i].w[2]+a[1]*d_layer_1[i];
+                        layer1[i].update(updated_weights_layer_1[i]);
+                    }
+
                     //Updating Neuron Weights
-                    double updated_weights_a[3] = {layer2.w[0]+d, layer2.w[1]+layer1a.compute(a)*d, layer2.w[2]+layer1b.compute(a)*d};
-                    double updated_weights_b[3] = {layer1a.w[0]+da, layer1a.w[1]+a[0]*da, layer1a.w[2]+a[1]*da};
-                    double updated_weights_c[3] = {layer1b.w[0]+db, layer1b.w[1]+a[0]*db, layer1b.w[2]+a[1]*db};
                     layer2.update(updated_weights_a);
-                    layer1a.update(updated_weights_b);
-                    layer1b.update(updated_weights_c);
                     
                 }
                 counter++;
@@ -157,7 +154,7 @@ public:
 //NeuronNet toString
 inline
 std::ostream& operator<<(std::ostream &strm, const NeuronNet &a) {
-    return strm << "Layer1a: " << a.layer1a << "\n" << "Layer1b: " << a.layer1b << "\n" << "Layer2: " << a.layer2;
+    return strm << "Layer1a: " << a.layer1[0] << "\n" << "Layer1b: " << a.layer1[1] << "\n" << "Layer2: " << a.layer2;
 }
 
 class NeuralDetector: public NeuralProcessor { //A neuron net made by connecting 11 neurons together, 6 in layer 1, 4 in layer 2 and 1 output neuron
