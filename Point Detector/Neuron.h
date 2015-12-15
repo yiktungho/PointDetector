@@ -53,9 +53,9 @@ public:
     
     void initialise(){ //initialises Neuron weights
 		/*
-         w0 = 0;
-         w1 = 0;
-         w2 = 0;
+         for(int i = 0; i < NUMBER_OF_WEIGHTS; i++) {
+            w[i] = 0;
+         }
          */
 		
 		//Alternatively generate random number between 0 and 1;
@@ -156,12 +156,9 @@ public:
 	
     void initialise(){ //initialises Neuron weights
 		/*
-         w0 = 0;
-         w1 = 0;
-         w2 = 0;
-         w3 = 0;
-         w4 = 0;
-         
+         for(int i = 0; i < NUMBER_OF_WEIGHTS; i++) {
+            w[i] = 0;
+         }
          */
 		
 		//Alternatively generate random number between 0 and 1;
@@ -224,13 +221,9 @@ public:
 	
 	void initialise(){ //initialises Neuron weights
 		/*
-         w[0] = 0;
-         w[1] = 0;
-         w2 = 0;
-         w3 = 0;
-         w4 = 0;
-         w5 = 0;
-         w6 = 0;
+         for(int i = 0; i < NUMBER_OF_WEIGHTS; i++) {
+             w[i] = 0;
+         }
          */
 		
 		//Alternatively generate random number between 0 and 1;
