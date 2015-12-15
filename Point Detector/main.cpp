@@ -69,16 +69,17 @@ vector<double> GEOtarget() { //Generates a target for GEO learning (even) for us
 }
 
 int main () {
+    srand (static_cast<unsigned int>(time(0))); //Change seed
     
     cout << "---Begin Single Neuron Demo---" << endl;
     
     //Generating Input
     vector<Input> Inputmap = BooleanInput();
     
-    Neuron AND (-8.615,5,5.5);
+    Neuron AND;
     NeuralProcessor * ANDtester = &AND;
     
-    Neuron OR (-0.5,1,1);
+    Neuron OR;
     NeuralProcessor * ORtester = &OR;
     
     //Teaching AND to a Neuron and testing
@@ -149,7 +150,7 @@ int main () {
     testing(NANDtester, Inputmap);
     
     cout << "---End Single Neuron Demo---" << endl;
-    
+
     
     cout << "---Begin Simple Neuron Network Demo---" << endl;
     
