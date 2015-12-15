@@ -211,7 +211,7 @@ int main () {
     NeuralProcessor * detectorTester = &detector;
     detector.initialise();
     
-    cout << ("Current GEO Neuron Net weights");
+    cout << ("Current GEO Neuron Net weights") << endl;
     cout << detector << endl;
     
     cout << "Teaching GEO to Neuron Net [Please be patient: script will normally timeout if teaching takes too long]" << endl;
@@ -232,6 +232,6 @@ int main () {
     cout << "Main test, Result of {0.7,0.3}: " << detector.compute(GEOInputmap[73]) << endl;
     testing(detectorTester, GEOInputmap);
     
-    cout << ("---End Detector Demo---");
+    cout << ("---End Detector Demo---") << endl;
     
     return 0; }
