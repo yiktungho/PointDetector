@@ -25,14 +25,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5431175E198BE16F008C1CEE /* Neuron.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Neuron.h; sourceTree = "<group>"; };
-		5431175F198BFA2F008C1CEE /* Networks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Networks.h; sourceTree = "<group>"; };
-		545BB6721984D25A0075B7AE /* Point Detector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Point Detector"; sourceTree = BUILT_PRODUCTS_DIR; };
-		545BB6751984D25A0075B7AE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		545BB6771984D25A0075B7AE /* Point_Detector.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Point_Detector.1; sourceTree = "<group>"; };
-		54B9C12A1C22AFF4000F3F5B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		54B9C12C1C22B629000F3F5B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		54B9C12E1C22E241000F3F5B /* C++.gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "C++.gitignore"; sourceTree = "<group>"; };
+		5431175E198BE16F008C1CEE /* Neuron.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Neuron.h; path = "Point Detector/Neuron.h"; sourceTree = "<group>"; };
+		5431175F198BFA2F008C1CEE /* Networks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Networks.h; path = "Point Detector/Networks.h"; sourceTree = "<group>"; };
+		545BB6721984D25A0075B7AE /* Point Detector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "Point Detector"; path = "/Users/yiktungho/Documents/UNI/UNI Year 4/C plus plus/Point Detector/build/Debug/Point Detector"; sourceTree = "<absolute>"; };
+		545BB6751984D25A0075B7AE /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = "Point Detector/main.cpp"; sourceTree = "<group>"; };
+		545BB6771984D25A0075B7AE /* Point_Detector.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = Point_Detector.1; path = "Point Detector/Point_Detector.1"; sourceTree = "<group>"; };
+		54B9C12A1C22AFF4000F3F5B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = "Point Detector/LICENSE"; sourceTree = "<group>"; };
+		54B9C12C1C22B629000F3F5B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = "Point Detector/README.md"; sourceTree = "<group>"; };
+		54B9C12E1C22E241000F3F5B /* C++.gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "C++.gitignore"; path = "Point Detector/C++.gitignore"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,22 +49,6 @@
 		545BB6691984D25A0075B7AE = {
 			isa = PBXGroup;
 			children = (
-				545BB6741984D25A0075B7AE /* Point Detector */,
-				545BB6731984D25A0075B7AE /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		545BB6731984D25A0075B7AE /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				545BB6721984D25A0075B7AE /* Point Detector */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		545BB6741984D25A0075B7AE /* Point Detector */ = {
-			isa = PBXGroup;
-			children = (
 				545BB6751984D25A0075B7AE /* main.cpp */,
 				545BB6771984D25A0075B7AE /* Point_Detector.1 */,
 				5431175E198BE16F008C1CEE /* Neuron.h */,
@@ -73,7 +57,6 @@
 				54B9C12C1C22B629000F3F5B /* README.md */,
 				54B9C12E1C22E241000F3F5B /* C++.gitignore */,
 			);
-			path = "Point Detector";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -113,7 +96,7 @@
 				en,
 			);
 			mainGroup = 545BB6691984D25A0075B7AE;
-			productRefGroup = 545BB6731984D25A0075B7AE /* Products */;
+			productRefGroup = 545BB6691984D25A0075B7AE;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
