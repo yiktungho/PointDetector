@@ -17,7 +17,7 @@ void testing(NeuralProcessor * n, vector<Input> map) { //Test programmed Neural 
    
     for (vector<Input>::size_type i = 0; i != map.size(); i++) {
         cout << "Input [x1 = " << map[i][0] << ", x2 = " << map[i][1] <<
-        "] Output = " << n->compute(map[i]) <<endl;
+        "]\t Output = " << n->compute(map[i]) <<endl;
     }
     
 }

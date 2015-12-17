@@ -127,7 +127,7 @@ public:
 //Neuron toString
 inline
 std::ostream& operator<<(std::ostream &strm, const Neuron &a) {
-    return strm << "w0 = " << a.w[0] << ",\t w1 = " << a.w[1] << ",\t w2 = " << a.w[2];
+    return strm << "w0 = " << a.w[0] << ",\tw1 = " << a.w[1] << ",\tw2 = " << a.w[2];
 }
 
 
@@ -170,14 +170,14 @@ public:
         }
 	}
 	
-	double compute(double x1, double x2, double x3, double x4){ //computing output from inputs using transfer function
-		double a = w[0] + (w[1]*x1 + w[2]*x2 + w[3]*x3 + w[4]*x4);
+	double compute(double x[4]){ //computing output from inputs using transfer function
+		double a = w[0] + (w[1]*x[0] + w[2]*x[1] + w[3]*x[2] + w[4]*x[3]);
 		double v = (0.5)*(1+tanh(a/T));
 		return v;
 	}
 	
-	double computeX(double x1, double x2, double x3, double x4){ //middle step in compute, used to simplify learning algorithm
-		double a = w[0] + (w[1]*x1 + w[2]*x2 + w[3]*x3 + w[4]*x4);
+	double computeX(double x[4]){ //middle step in compute, used to simplify learning algorithm
+		double a = w[0] + (w[1]*x[0] + w[2]*x[1] + w[3]*x[2] + w[4]*x[3]);
 		return a;
 	}
 	
@@ -192,7 +192,7 @@ public:
 //Neuron4 toString
 inline
 std::ostream& operator<<(std::ostream &strm, const Neuron4 &a) {
-    return strm << "w0 = " << a.w[0] << ",\t w1 = " << a.w[1] << ",\t w2 = " << a.w[2] << ",\t w3 = " << a.w[3] << ",\t w4 = " << a.w[4];
+    return strm << "w0 = " << a.w[0] << ",\tw1 = " << a.w[1] << ",\tw2 = " << a.w[2] << ",\tw3 = " << a.w[3] << ",\tw4 = " << a.w[4];
 }
 
 class Neuron6 : public Neuron4 { //Specialised output neuron for GEO2L network taking 6 inputs
@@ -235,14 +235,14 @@ public:
         }
 	}
 	
-	double compute(double x1, double x2, double x3, double x4, double x5, double x6){ //computing output from inputs using transfer function
-		double a = w[0] + (w[1]*x1 + w[2]*x2 + w[3]*x3 + w[4]*x4 + w[5]*x5 + w[6]*x6);
+	double compute(double x[6]){ //computing output from inputs using transfer function
+		double a = w[0] + (w[1]*x[0] + w[2]*x[1] + w[3]*x[2] + w[4]*x[3] + w[5]*x[4] + w[6]*x[5]);
 		double v = (0.5)*(1+tanh(a/T));
 		return v;
 	}
 	
-	double computeX(double x1, double x2, double x3, double x4, double x5, double x6){ //middle step in compute, used to simplify learning algorithm
-		double a = w[0] + (w[1]*x1 + w[2]*x2 + w[3]*x3 + w[4]*x4 + w[5]*x5 + w[6]*x6);
+	double computeX(double x[6]){ //middle step in compute, used to simplify learning algorithm
+		double a = w[0] + (w[1]*x[0] + w[2]*x[1] + w[3]*x[2] + w[4]*x[3] + w[5]*x[4] + w[6]*x[5]);
 		return a;
 	}
 	
@@ -258,7 +258,7 @@ public:
 //Neuron6 toString
 inline
 std::ostream& operator<<(std::ostream &strm, const Neuron6 &a) {
-    return strm << "w0 = " << a.w[0] << ",\t w1 = " << a.w[1] << ",\t w2 = " << a.w[2] << ",\t w3 = " << a.w[3] << ",\t w4 = " << a.w[4] << ",\t w5 = " << a.w[5] << ",\t w6 = " << a.w[6];
+    return strm << "w0 = " << a.w[0] << ",\tw1 = " << a.w[1] << ",\tw2 = " << a.w[2] << ",\tw3 = " << a.w[3] << ",\tw4 = " << a.w[4] << ",\tw5 = " << a.w[5] << ",\tw6 = " << a.w[6];
 }
 
 #endif

@@ -20,22 +20,7 @@ class NeuronNet: public NeuralProcessor { //A neuron net made by connecting 3 ne
 	Neuron layer2;
     
 public:
-    NeuronNet() {
-        Neuron layer1a;
-        Neuron layer1b;
-        Neuron layer2;
-    }
-	NeuronNet(Neuron n1, Neuron n2, Neuron n3) { //Constructor setting neurons of neuron net
-		layer1[0] = n1;
-		layer1[1] = n2;
-		layer2 = n3;
-	}
-    
-    NeuronNet(double weights_a[3], double weights_b[3], double weights_c[3]) { //Constructor setting weights of all Neurons
-        layer1[0].update(weights_a);
-		layer1[1].update(weights_b);
-		layer2.update(weights_c);
-	}
+    NeuronNet() {}
 	
 	void initialise() { //Initialises all neurons in net
         for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
@@ -64,14 +49,8 @@ public:
 		return output;
 	}
     
-    void update(double weights_a[3], double weights_b[3], double weights_c[3]) { //update weights of Neurons in net
-        layer1[0].update(weights_a);
-		layer1[1].update(weights_b);
-		layer2.update(weights_c);
-	}
-    
     void learn(std::vector<Input> Inputmap, std::vector<double> targetmap, double learnrate) {
-		//teaches single hiddne layer MLP Neuron Network (Neuronplus) based on expected Inputs and target
+		//teaches single hidden layer MLP Neuron Network (Neuronplus) based on expected Inputs and target
         
 		//initialising variables
         
@@ -83,7 +62,7 @@ public:
 		double counter = 0;
 		double initcounter = 0;
         
-        double updated_weights_layer_1[2][3];
+        double updated_weights_layer_1[NUM_NEURONS_LAYER_1][layer1[0].NUMBER_OF_WEIGHTS];
         
 		double m = 0.5; //momentum term
 		
@@ -126,7 +105,7 @@ public:
                     
                 }
                 counter++;
-                //std::cout << "Progress: Iterations taken: " << counter << " Initialisations: " << initcounter << " Error: " << errorsum << std::endl; //Verbose Option
+                //std::cout << "Progress: Iterations taken: " << counter << "\tInitialisations: " << initcounter << "\tError: " << errorsum << std::endl; //Verbose Option
                 
                 if (counter > 1000000) {
                     std::cout << "Loop broken, over " << (counter-1) << " iterations" << std::endl; //Verbose Option
@@ -140,7 +119,7 @@ public:
                 }
                 
             }
-            std::cout << "Complete: Iterations taken: " << counter << " Initialisations: " << initcounter << " Error: " << errorsum << std::endl;
+            std::cout << "Complete: Iterations taken: " << counter << "\tInitialisations: " << initcounter << "\tError: " << errorsum << std::endl;
         }
 
         else {
@@ -154,189 +133,112 @@ public:
 //NeuronNet toString
 inline
 std::ostream& operator<<(std::ostream &strm, const NeuronNet &a) {
-    return strm << "Layer1a: " << a.layer1[0] << "\n" << "Layer1b: " << a.layer1[1] << "\n" << "Layer2: " << a.layer2;
+    return strm << "Layer1[0]: " << a.layer1[0] << "\n" << "Layer1[1]: " << a.layer1[1] << "\n" << "Layer2: " << a.layer2;
 }
 
 class NeuralDetector: public NeuralProcessor { //A neuron net made by connecting 11 neurons together, 6 in layer 1, 4 in layer 2 and 1 output neuron
     
     friend std::ostream& operator<<(std::ostream&, const NeuralDetector&);
     
-	//First hidden layer
-	Neuron layer1a;
-	Neuron layer1b;
-	Neuron layer1c;
-	Neuron layer1d;
-	Neuron layer1e;
-	Neuron layer1f;
+    static const int NUM_NEURONS_LAYER_1 = 6;
+    static const int NUM_NEURONS_LAYER_2 = 4;
+    
+    // Number of weights each neuron has in a layer
+    static const int NUM_WEIGHTS_LAYER_1 = 4;
+    static const int NUM_WEIGHTS_LAYER_2 = 7;
+    
+    //First hidden layer
+    Neuron layer1[NUM_NEURONS_LAYER_1];
     
 	//Second hidden layer
-	Neuron6 layer2a;
-	Neuron6 layer2b;
-	Neuron6 layer2c;
-	Neuron6 layer2d;
+    Neuron6 layer2[NUM_NEURONS_LAYER_2];
     
 	//Output layer
 	Neuron4 layer3;
 	
 public:
-	NeuralDetector() {
-        //First hidden layer
-        Neuron layer1a;
-        Neuron layer1b;
-        Neuron layer1c;
-        Neuron layer1d;
-        Neuron layer1e;
-        Neuron layer1f;
-        
-        //Second hidden layer
-        Neuron6 layer2a;
-        Neuron6 layer2b;
-        Neuron6 layer2c;
-        Neuron6 layer2d;
-        
-        //Output layer
-        Neuron4 layer3;
-    }
-	NeuralDetector(Neuron n1, Neuron n2, Neuron n3, Neuron n4, Neuron n5, Neuron n6, Neuron6 n21,
-                   Neuron6 n22, Neuron6 n23, Neuron6 n24, Neuron4 n31 ) {
-        //Constructor setting neurons of neuron net
-		
-        layer1a = n1;
-		layer1b = n2;
-		layer1c = n3;
-		layer1d = n4;
-		layer1e = n5;
-		layer1f = n6;
-		
-		layer2a = n21;
-		layer2b = n22;
-		layer2c = n23;
-		layer2d = n24;
-		
-		layer3 = n31;
-	}
+	NeuralDetector() {}
 	
 	void initialise() { //Initialises all neurons in net
-		layer1a.initialise();
-		layer1b.initialise();
-		layer1c.initialise();
-		layer1d.initialise();
-		layer1e.initialise();
-		layer1f.initialise();
-		
-		layer2a.initialise();
-		layer2b.initialise();
-		layer2c.initialise();
-		layer2d.initialise();
-		
+        for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+            layer1[i].initialise();
+        }
+        for(int i = 0; i < NUM_NEURONS_LAYER_2; i++) {
+            layer2[i].initialise();
+        }
 		layer3.initialise();
 	}
 	
 	double compute(Input q){ //computing output from inputs using transfer function
 		
-		double Input1 = layer1a.compute(q);
-		double Input2 = layer1b.compute(q);
-		double Input3 = layer1c.compute(q);
-		double Input4 = layer1d.compute(q);
-		double Input5 = layer1e.compute(q);
-		double Input6 = layer1f.compute(q);
+        
+        double Input[NUM_NEURONS_LAYER_1];
+        for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+            Input[i] = layer1[i].compute(q);
+        }
 		
-		double Hidden1 = layer2a.compute(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden2 = layer2b.compute(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden3 = layer2c.compute(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden4 = layer2d.compute(Input1, Input2, Input3, Input4, Input5, Input6);
+        double Hidden[NUM_NEURONS_LAYER_2];
+        for(int i = 0; i < NUM_NEURONS_LAYER_2; i++) {
+            Hidden[i] = layer2[i].compute(Input);
+        }
 		
-		double output = layer3.compute(Hidden1, Hidden2, Hidden3, Hidden4);
+		double output = layer3.compute(Hidden);
 		
 		return output;
 	}
 	
 	double computeX(Input q){ //middle step in compute, used to simplify learning algorithm
 		
-		double Input1 = layer1a.compute(q);
-		double Input2 = layer1b.compute(q);
-		double Input3 = layer1c.compute(q);
-		double Input4 = layer1d.compute(q);
-		double Input5 = layer1e.compute(q);
-		double Input6 = layer1f.compute(q);
+        double Input[NUM_NEURONS_LAYER_1];
+        for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+            Input[i] = layer1[i].compute(q);
+        }
 		
-		double Hidden1 = layer2a.compute(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden2 = layer2b.compute(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden3 = layer2c.compute(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden4 = layer2d.compute(Input1, Input2, Input3, Input4, Input5, Input6);
+        double Hidden[NUM_NEURONS_LAYER_2];
+        for(int i = 0; i < NUM_NEURONS_LAYER_2; i++) {
+            Hidden[i] = layer2[i].compute(Input);
+        }
 		
-		double output = layer3.computeX(Hidden1, Hidden2, Hidden3, Hidden4);
+		double output = layer3.computeX(Hidden);
 		return output;
 	}
 	
-	double computeX2(Input q, std::string select) { //middle step in compute, used to simplify learning algorithm (for 2nd Hidden layer)
+	double computeX2(Input q, int select) { //middle step in compute, used to simplify learning algorithm (for 2nd Hidden layer)
         
 		double output;
 		
-		double Input1 = layer1a.compute(q);
-		double Input2 = layer1b.compute(q);
-		double Input3 = layer1c.compute(q);
-		double Input4 = layer1d.compute(q);
-		double Input5 = layer1e.compute(q);
-		double Input6 = layer1f.compute(q);
+        double Input[NUM_NEURONS_LAYER_1];
+        for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+            Input[i] = layer1[i].compute(q);
+        }
+        
+        double Hidden[NUM_NEURONS_LAYER_2];
+        for(int i = 0; i < NUM_NEURONS_LAYER_2; i++) {
+            Hidden[i] = layer2[i].computeX(Input);
+        }
 		
-		double Hidden1 = layer2a.computeX(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden2 = layer2b.computeX(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden3 = layer2c.computeX(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden4 = layer2d.computeX(Input1, Input2, Input3, Input4, Input5, Input6);
-		
-		if (select == "a") {
-			output = Hidden1;
-		}
-		else if (select == "b") {
-			output = Hidden2;
-		}
-		else if (select == "c") {
-			output = Hidden3;
-		}
-		else if (select == "d") {
-			output = Hidden4;
-		}
-		else {
-			throw (std::string) "Neuron selection invalid";
-		}
+		output = Hidden[select];
         
 		return output;
 	}
 	
 	
-	double compute2(Input q, std::string select) { //Normal output of 2nd hidden layer neurons
+	double compute2(Input q, int select) { //Normal output of 2nd hidden layer neurons
 		
 		double output;
 		
-		double Input1 = layer1a.compute(q);
-		double Input2 = layer1b.compute(q);
-		double Input3 = layer1c.compute(q);
-		double Input4 = layer1d.compute(q);
-		double Input5 = layer1e.compute(q);
-		double Input6 = layer1f.compute(q);
-		
-		double Hidden1 = layer2a.compute(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden2 = layer2b.compute(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden3 = layer2c.compute(Input1, Input2, Input3, Input4, Input5, Input6);
-		double Hidden4 = layer2d.compute(Input1, Input2, Input3, Input4, Input5, Input6);
-		
-		if (select == "a") {
-			output = Hidden1;
-		}
-		else if (select == "b") {
-			output = Hidden2;
-		}
-		else if (select == "c") {
-			output = Hidden3;
-		}
-		else if (select == "d") {
-			output = Hidden4;
-		}
-		else {
-			throw (std::string) "Neuron selection invalid";
-		}
+        double Input[NUM_NEURONS_LAYER_1];
+        for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+            Input[i] = layer1[i].compute(q);
+        }
         
+        double Hidden[NUM_NEURONS_LAYER_2];
+        for(int i = 0; i < NUM_NEURONS_LAYER_2; i++) {
+            Hidden[i] = layer2[i].compute(Input);
+        }
+		
+        output = Hidden[select];
+		
 		return output;
 	}
     
@@ -357,18 +259,15 @@ public:
 		
 		//Second layer update variables
 		double d = 0;
-		double da = 0;
-		double db = 0;
-		double dc = 0;
-		double dd = 0;
+		
+        double d_layer_2[NUM_NEURONS_LAYER_2];
+        
+        double updated_weights_layer_2[NUM_NEURONS_LAYER_2][layer2[0].NUMBER_OF_WEIGHTS];
 		
 		//First layer update variables
-		double da1 = 0;
-		double db1 = 0;
-		double dc1 = 0;
-		double dd1 = 0;
-		double de1 = 0;
-		double df1 = 0;
+        double d_layer_1[NUM_NEURONS_LAYER_1] = {0, 0, 0, 0, 0, 0};
+        
+        double updated_weights_layer_1[NUM_NEURONS_LAYER_1][layer1[0].NUMBER_OF_WEIGHTS];
 		
 		double deri3 = 0;
         
@@ -387,73 +286,52 @@ public:
                     deri3 = (0.5)*pow(cosh(computeX(a)/T),-2)/((double) T);
                     d = learnrate*error*deri3 + m*d;
                     
-                    double deri2a = (0.5)*pow(cosh(computeX2(a,"a")/T),-2)/((double) T);
-                    double deri2b = (0.5)*pow(cosh(computeX2(a,"b")/T),-2)/((double) T);
-                    double deri2c = (0.5)*pow(cosh(computeX2(a,"c")/T),-2)/((double) T);
-                    double deri2d = (0.5)*pow(cosh(computeX2(a,"d")/T),-2)/((double) T);
+                    double deri2[NUM_NEURONS_LAYER_2];
+                    for(int i = 0; i < NUM_NEURONS_LAYER_2; i++) {
+                        deri2[i] = (0.5)*pow(cosh(computeX2(a,i)/T),-2)/((double) T);
+                    }
                     
-                    double deri1a = (0.5)*pow(cosh(layer1a.computeX(a)/T),-2)/((double) T);
-                    double deri1b = (0.5)*pow(cosh(layer1b.computeX(a)/T),-2)/((double) T);
-                    double deri1c = (0.5)*pow(cosh(layer1c.computeX(a)/T),-2)/((double) T);
-                    double deri1d = (0.5)*pow(cosh(layer1d.computeX(a)/T),-2)/((double) T);
-                    double deri1e = (0.5)*pow(cosh(layer1e.computeX(a)/T),-2)/((double) T);
-                    double deri1f = (0.5)*pow(cosh(layer1f.computeX(a)/T),-2)/((double) T);
+                    double deri1[NUM_NEURONS_LAYER_1];
+                    for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+                        deri1[i] = (0.5)*pow(cosh(layer1[i].computeX(a)/T),-2)/((double) T);
+                    }
                     
                     double H = error*deri3;
                     
-                    da = learnrate*(H*layer3.w[1])*deri2a + m*da;
-                    db = learnrate*(H*layer3.w[2])*deri2b + m*db;
-                    dc = learnrate*(H*layer3.w[3])*deri2c + m*dc;
-                    dd = learnrate*(H*layer3.w[4])*deri2d + m*dd;
+                    for(int i = 0; i < NUM_NEURONS_LAYER_2; i++) {
+                        d_layer_2[i] = learnrate*(H*layer3.w[1])*deri2[i] + m*d_layer_2[i];
+                    }
                     
-                    da1 = learnrate*(H*(layer2a.w[1]+layer2b.w[1]+layer2c.w[1]+layer2d.w[1]))*deri1a + m*da1;
-                    db1 = learnrate*(H*(layer2a.w[2]+layer2b.w[2]+layer2c.w[2]+layer2d.w[2]))*deri1b + m*db1;
-                    dc1 = learnrate*(H*(layer2a.w[3]+layer2b.w[3]+layer2c.w[3]+layer2d.w[3]))*deri1c + m*dc1;
-                    dd1 = learnrate*(H*(layer2a.w[4]+layer2b.w[4]+layer2c.w[4]+layer2d.w[4]))*deri1d + m*dd1;
-                    de1 = learnrate*(H*(layer2a.w[5]+layer2b.w[5]+layer2c.w[5]+layer2d.w[5]))*deri1e + m*de1;
-                    df1 = learnrate*(H*(layer2a.w[6]+layer2b.w[6]+layer2c.w[6]+layer2d.w[6]))*deri1f + m*df1;
+                    for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+                        d_layer_1[i] = learnrate*(H*(layer2[0].w[i+1]+layer2[1].w[i+1]+layer2[2].w[i+1]+layer2[3].w[i+1]))*deri1[i] + m*d_layer_1[i];
+                    }
                     
                     //Updating Neuron Weights
-                    double updated_weights_3[5] = {layer3.w[0]+d, layer3.w[1]+compute2(a,"a")*d, layer3.w[2]+compute2(a,"b")*d
-                        , layer3.w[3]+compute2(a,"c")*d, layer3.w[4]+compute2(a,"d")*d};
+                    double updated_weights_3[5] = {layer3.w[0]+d, layer3.w[1]+compute2(a,0)*d, layer3.w[2]+compute2(a,1)*d
+                        , layer3.w[3]+compute2(a,2)*d, layer3.w[4]+compute2(a,3)*d};
                     layer3.update(updated_weights_3);
                     
-                    double updated_weights_2a[7] = {layer2a.w[0]+da, layer2a.w[1]+layer1a.compute(a)*da, layer2a.w[2]+layer1b.compute(a)*da
-                        , layer2a.w[3]+layer1c.compute(a)*da, layer2a.w[4]+layer1d.compute(a)*da
-                        , layer2a.w[5]+layer1e.compute(a)*da, layer2a.w[6]+layer1f.compute(a)*da};
-                    layer2a.update(updated_weights_2a);
-                    double updated_weights_2b[7] = {layer2b.w[0]+db, layer2b.w[1]+layer1a.compute(a)*db, layer2b.w[2]+layer1b.compute(a)*db
-                        , layer2b.w[3]+layer1c.compute(a)*db, layer2b.w[4]+layer1d.compute(a)*db
-                        , layer2b.w[5]+layer1e.compute(a)*db, layer2b.w[6]+layer1f.compute(a)*db};
-                    layer2b.update(updated_weights_2b);
-                    double updated_weights_2c[7] = {layer2a.w[0]+da, layer2a.w[1]+layer1a.compute(a)*da, layer2a.w[2]+layer1b.compute(a)*dc
-                        , layer2c.w[3]+layer1c.compute(a)*dc, layer2c.w[4]+layer1d.compute(a)*dc
-                        , layer2c.w[5]+layer1e.compute(a)*dc, layer2c.w[6]+layer1f.compute(a)*dc};
-                    layer2c.update(updated_weights_2c);
-                    double updated_weights_2d[7] = {layer2a.w[0]+da, layer2a.w[1]+layer1a.compute(a)*da, layer2a.w[2]+layer1b.compute(a)*dd
-                        , layer2d.w[3]+layer1c.compute(a)*dd, layer2d.w[4]+layer1d.compute(a)*dd
-                        , layer2d.w[5]+layer1e.compute(a)*dd, layer2d.w[6]+layer1f.compute(a)*dd};
-                    layer2d.update(updated_weights_2d);
+                    for(int i = 0; i < NUM_NEURONS_LAYER_2; i++) {
+                        updated_weights_layer_2[i][0] = layer2[i].w[0]+d_layer_2[i];
+                        for(int j = 0; j < NUM_NEURONS_LAYER_1; j++) {
+                            updated_weights_layer_2[i][j+1] = layer2[i].w[j+1]+layer1[j].compute(a)*d_layer_2[i];
+                        }
+                        layer2[i].update(updated_weights_layer_2[i]);
+                    }
                     
-                    double updated_weights_1a[3] = {layer1a.w[0]+da1, layer1a.w[1]+a[0]*da1, layer1a.w[2]+a[1]*da1};
-                    double updated_weights_1b[3] = {layer1b.w[0]+db1, layer1b.w[1]+a[0]*db1, layer1b.w[2]+a[1]*db1};
-                    double updated_weights_1c[3] = {layer1c.w[0]+dc1, layer1c.w[1]+a[0]*dc1, layer1c.w[2]+a[1]*dc1};
-                    double updated_weights_1d[3] = {layer1d.w[0]+dd1, layer1d.w[1]+a[0]*dd1, layer1d.w[2]+a[1]*dd1};
-                    double updated_weights_1e[3] = {layer1e.w[0]+de1, layer1e.w[1]+a[0]*de1, layer1e.w[2]+a[1]*de1};
-                    double updated_weights_1f[3] = {layer1f.w[0]+df1, layer1f.w[1]+a[0]*df1, layer1f.w[2]+a[1]*df1};
-                    layer1a.update(updated_weights_1a);
-                    layer1b.update(updated_weights_1b);
-                    layer1c.update(updated_weights_1c);
-                    layer1d.update(updated_weights_1d);
-                    layer1e.update(updated_weights_1e);
-                    layer1f.update(updated_weights_1f);
+                    for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
+                        updated_weights_layer_1[i][0] = layer1[i].w[0]+d_layer_1[i];
+                        updated_weights_layer_1[i][1] = layer1[i].w[1]+a[0]*d_layer_1[i];
+                        updated_weights_layer_1[i][2] = layer1[i].w[2]+a[1]*d_layer_1[i];
+                        layer1[i].update(updated_weights_layer_1[i]);
+                    }
                     
                 }
                 
-                //std::cout << "Progress: Iterations taken: " << counter << " Initialisations: " << initcounter << " Error: " << errorsum << std::endl; //Verbose option
+                //std::cout << "Progress: Iterations taken: " << counter << "\tInitialisations: " << initcounter << "\tError: " << errorsum << std::endl; //Verbose option
                 
                 if (counter == counterb) {
-                    std::cout << "Progress: Iterations taken: " << counter << " Initialisations: " << initcounter << " Error: " << errorsum << std::endl;
+                    std::cout << "Progress: Iterations taken: " << counter << "\tInitialisations: " << initcounter << "\tError: " << errorsum << std::endl;
                     counterb = counterb + 1000;
                 }
                 counter++;
@@ -471,7 +349,7 @@ public:
                 }
                 
             }
-            std::cout << "Complete: Iterations taken: " << counter << " Initialisations: " << initcounter << " Error: " << errorsum << std::endl;
+            std::cout << "Complete: Iterations taken: " << counter << "\tInitialisations: " << initcounter << "\tError: " << errorsum << std::endl;
         }
         
         else {
@@ -484,10 +362,10 @@ public:
 //NeuralDetector toString
 inline
 std::ostream& operator<<(std::ostream &strm, const NeuralDetector &a) {
-    return strm << "Layer1a: " << a.layer1a << "\n" << "Layer1b: " << a.layer1b << "\n" << "Layer1c: " << a.layer1c
-    << "\n" << "Layer1d: " << a.layer1d << "\n" << "Layer1e: " << a.layer1e << "\n" << "Layer1f: " << a.layer1f
-    << "\n" << "Layer2a: " << a.layer2a << "\n" << "Layer2b: " << a.layer2b << "\n" << "Layer2c: " << a.layer2c
-    << "\n" << "Layer2d: " << a.layer2d << "\n" << "Layer3: " << a.layer3;
+    return strm << "Layer1[0]: " << a.layer1[0] << "\n" << "Layer1[1]: " << a.layer1[1] << "\n" << "Layer1[2]: " << a.layer1[2]
+    << "\n" << "Layer1[3]: " << a.layer1[3] << "\n" << "Layer1[4]: " << a.layer1[4] << "\n" << "Layer1[5]: " << a.layer1[5]
+    << "\n" << "Layer2[0]: " << a.layer2[0] << "\n" << "Layer2[1]: " << a.layer2[1] << "\n" << "Layer2[2]: " << a.layer2[2]
+    << "\n" << "Layer2[3]: " << a.layer2[3] << "\n" << "Layer3: " << a.layer3;
 } 
 
 #endif
