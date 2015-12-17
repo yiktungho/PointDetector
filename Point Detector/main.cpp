@@ -69,7 +69,7 @@ vector<double> GEOtarget() { //Generates a target for GEO learning (even) for us
 }
 
 int main () {
-    srand (static_cast<unsigned int>(time(0))); //Change seed
+    srand (static_cast<unsigned int>(time(0))); //Set random seed
     
     cout << "---Begin Single Neuron Demo---" << endl;
     

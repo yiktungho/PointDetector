@@ -54,7 +54,7 @@ public:
         
 		//initialising variables
         
-		//Update variables to be stored for momentum
+		//Update variables
 		double d_layer_2 = 0;
         double d_layer_1[NUM_NEURONS_LAYER_1] = {0,0};
 		
@@ -63,8 +63,6 @@ public:
 		double initcounter = 0;
         
         double updated_weights_layer_1[NUM_NEURONS_LAYER_1][layer1[0].NUMBER_OF_WEIGHTS];
-        
-		double m = 0.5; //momentum term
 		
         if (Inputmap.size() == targetmap.size()) {
             while (std::abs(errorsum) > 0.01) { //while total network error is larger than target (0.01), continue learning
@@ -80,7 +78,7 @@ public:
                     // Layer 2 Calculations
                     double deri2 = (0.5)*pow(cosh(computeX(a)/T),-2)/((double) T);
                     
-                    d_layer_2 = learnrate*error*deri2 + m*d_layer_2;
+                    d_layer_2 = learnrate*error*deri2;
                     
                     double H = error*deri2;
                     double updated_weights_a[3] = {layer2.w[0]+d_layer_2, layer2.w[1]+layer1[0].compute(a)*d_layer_2, layer2.w[2]+layer1[1].compute(a)*d_layer_2};
@@ -90,7 +88,7 @@ public:
                     
                     for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
                         deri1[i] = (0.5)*pow(cosh(layer1[i].computeX(a)/T),-2)/((double) T);
-                        d_layer_1[i] = learnrate*(H*layer2.w[i+1])*deri1[i] + m*d_layer_1[i];
+                        d_layer_1[i] = learnrate*(H*layer2.w[i+1])*deri1[i];
                     }
 
                     for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
@@ -245,7 +243,7 @@ public:
     void learn (std::vector<Input> Inputmap, std::vector<double> targetmap, double learnrate) {
 		//teaches 2 Hidden Layer MLP Neuron Network based on expected Inputs and target (for x-y plane point detector)
 		//For use with NeuronGEO2L network
-		//Utilises Backpropagation with momentum for learning
+		//Utilises Backpropagation for learning
 		
 		//initialising variables
 		double current = 0;
@@ -255,7 +253,6 @@ public:
 		double counter = 0;
 		double counterb = 0;
 		double initcounter = 0;
-		double m = 0; //Momentum term --> originally set to 0.5, but futher testing indicate turning it off is better, possibly an implementation issue
 		
 		//Second layer update variables
 		double d = 0;
@@ -284,7 +281,7 @@ public:
                     //Calculating terms used in update for backpropogation learning
                     
                     deri3 = (0.5)*pow(cosh(computeX(a)/T),-2)/((double) T);
-                    d = learnrate*error*deri3 + m*d;
+                    d = learnrate*error*deri3;
                     
                     double deri2[NUM_NEURONS_LAYER_2];
                     for(int i = 0; i < NUM_NEURONS_LAYER_2; i++) {
@@ -299,11 +296,11 @@ public:
                     double H = error*deri3;
                     
                     for(int i = 0; i < NUM_NEURONS_LAYER_2; i++) {
-                        d_layer_2[i] = learnrate*(H*layer3.w[1])*deri2[i] + m*d_layer_2[i];
+                        d_layer_2[i] = learnrate*(H*layer3.w[1])*deri2[i];
                     }
                     
                     for(int i = 0; i < NUM_NEURONS_LAYER_1; i++) {
-                        d_layer_1[i] = learnrate*(H*(layer2[0].w[i+1]+layer2[1].w[i+1]+layer2[2].w[i+1]+layer2[3].w[i+1]))*deri1[i] + m*d_layer_1[i];
+                        d_layer_1[i] = learnrate*(H*(layer2[0].w[i+1]+layer2[1].w[i+1]+layer2[2].w[i+1]+layer2[3].w[i+1]))*deri1[i];
                     }
                     
                     //Updating Neuron Weights

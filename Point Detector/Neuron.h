@@ -83,12 +83,11 @@ public:
 	}
     
     void learn(std::vector<Input> Inputmap, std::vector<double> targetmap, double learnrate) {
-        //teaches Neuron based on expected Inputs and target
+        //teaches Neuron based on expected Inputs and target using backpropogation
         
         //initialising variables
         double d = 0;
         double errorsum = 1;
-        double m = 0; //momentum term
         double counter = 0;
         
         if (Inputmap.size() == targetmap.size()) {
@@ -101,7 +100,7 @@ public:
                     double error = current - target;
                     errorsum = std::abs(error) + errorsum;
                     double deri = (0.5)*pow(cosh(computeX(a)/T),-2)/((double) T);
-                    d = learnrate*error*deri + m*d;
+                    d = learnrate*error*deri;
                     double updated_weights[NUMBER_OF_WEIGHTS] = {w[0]+d, w[1]+a[0]*d, w[2]+a[1]*d};
                     update(updated_weights);
                 }
