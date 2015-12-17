@@ -3,7 +3,7 @@
 //  Point Detector
 //
 //  Created by Yik Tung Ho on 27/7/14.
-//  Copyright (c) 2014年 YTH. All rights reserved.
+//  Copyright (c) 2015 YTH. All rights reserved.
 //
 
 // constructors and derived classes

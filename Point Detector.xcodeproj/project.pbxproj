@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		545BB6761984D25A0075B7AE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 545BB6751984D25A0075B7AE /* main.cpp */; };
 		545BB6781984D25A0075B7AE /* Point_Detector.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 545BB6771984D25A0075B7AE /* Point_Detector.1 */; };
-		54B9C12D1C22B629000F3F5B /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 54B9C12C1C22B629000F3F5B /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -126,7 +125,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54B9C12D1C22B629000F3F5B /* README.md in Sources */,
 				545BB6761984D25A0075B7AE /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

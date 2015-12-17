@@ -3,7 +3,7 @@
 //  Point Detector
 //
 //  Created by Yik Tung Ho on 1/8/14.
-//  Copyright (c) 2014年 YTH. All rights reserved.
+//  Copyright (c) 2015 YTH. All rights reserved.
 //
 
 #ifndef Point_Detector_Neuron_h
