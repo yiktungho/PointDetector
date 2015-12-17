@@ -32,6 +32,7 @@
 		545BB6771984D25A0075B7AE /* Point_Detector.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Point_Detector.1; sourceTree = "<group>"; };
 		54B9C12A1C22AFF4000F3F5B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		54B9C12C1C22B629000F3F5B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		54B9C12E1C22E241000F3F5B /* C++.gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "C++.gitignore"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +71,7 @@
 				5431175F198BFA2F008C1CEE /* Networks.h */,
 				54B9C12A1C22AFF4000F3F5B /* LICENSE */,
 				54B9C12C1C22B629000F3F5B /* README.md */,
+				54B9C12E1C22E241000F3F5B /* C++.gitignore */,
 			);
 			path = "Point Detector";
 			sourceTree = "<group>";
